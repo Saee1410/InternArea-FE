@@ -43,7 +43,7 @@ import axios from "axios";
 // API
 // =====================================================
 
-import { API_URL } from "./utils/apiConfig";
+import { API_URL } from "../../utils/apiConfig";
 
 // =====================================================
 // COMPONENT
