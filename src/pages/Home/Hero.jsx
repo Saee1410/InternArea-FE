@@ -125,8 +125,8 @@ export default function SvgSlider() {
 
         const [internshipResponse, jobResponse] =
           await Promise.all([
-            axios.get(`${API_URL}/api/internship`),
-            axios.get(`${API_URL}/api/job`),
+            axios.get(`${API_URL}/api/internships`),
+            axios.get(`${API_URL}/api/jobs`),
           ]);
 
         setInternships(
