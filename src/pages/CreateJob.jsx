@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 
 import Navbar from "../components/layout/Navbar";
+import { API_URL } from "../utils/apiConfig";
 
 function CreateJob() {
   const { t } = useTranslation();
@@ -120,7 +121,7 @@ function CreateJob() {
       console.log("=================================");
 
       const response = await axios.post(
-        "http://localhost:8000/api/jobs/create",
+        `${API_URL}/api/jobs/create`,
         payload,
         {
           headers: {

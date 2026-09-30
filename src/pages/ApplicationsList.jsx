@@ -25,6 +25,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 
+import { API_URL } from "../utils/apiConfig";
+
 import Navbar from "../components/layout/Navbar";
 
 function ApplicationsList() {
@@ -61,7 +63,7 @@ function ApplicationsList() {
       const currentUserId = getCurrentUserId();
 
       const res = await axios.get(
-        "http://localhost:8000/api/applications",
+        `${API_URL}/api/applications`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

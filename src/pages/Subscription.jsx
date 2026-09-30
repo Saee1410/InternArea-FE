@@ -3,6 +3,7 @@ import axios from "axios";
 
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import { API_URL } from "../utils/apiConfig";
 
 import {
   Box,
@@ -129,7 +130,7 @@ function Subscriptions() {
       // ==========================================
 
       const res = await axios.post(
-        "http://localhost:8000/api/payment/subscription/create-order",
+        `${API_URL}/api/payment/subscription/create-order`,
         {
           plan: plan,
         },
@@ -192,7 +193,7 @@ function Subscriptions() {
             console.log("Razorpay Response:", response);
 
             const verifyResponse = await axios.post(
-              "http://localhost:8000/api/payment/subscription/verify",
+              `${API_URL}/api/payment/subscription/verify`,
               {
                 razorpay_order_id:
                   response.razorpay_order_id,

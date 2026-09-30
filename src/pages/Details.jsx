@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import { API_URL } from "../utils/apiConfig";
 
 import {
   Box,
@@ -55,8 +56,8 @@ function Details() {
 
       const url =
         type === "job"
-          ? `http://localhost:8000/api/jobs/${id}`
-          : `http://localhost:8000/api/internships/${id}`;
+          ? `${API_URL}/api/jobs/${id}`
+          : `${API_URL}/api/internships/${id}`;
 
       const res = await axios.get(url);
 
@@ -102,7 +103,7 @@ function Details() {
       setApplying(true);
 
       const res = await axios.post(
-        "http://localhost:8000/api/applications/apply",
+        `${API_URL}/api/applications/apply`,
         {
           internshipId: id,
         },

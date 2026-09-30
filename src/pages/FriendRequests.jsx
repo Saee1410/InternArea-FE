@@ -14,6 +14,7 @@ import {
 
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import { API_URL } from "../utils/apiConfig";
 
 const FriendRequests = () => {
   const { t } = useTranslation();
@@ -35,7 +36,7 @@ const FriendRequests = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "http://localhost:8000/api/friends/requests",
+        `${API_URL}/api/friends/requests`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -68,7 +69,7 @@ const FriendRequests = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.put(
-        `http://localhost:8000/api/friends/request/${requestId}/accept`,
+        `${API_URL}/api/friends/request/${requestId}/accept`,
         {},
         {
           headers: {
@@ -109,7 +110,7 @@ const FriendRequests = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.put(
-        `http://localhost:8000/api/friends/request/${requestId}/reject`,
+        `${API_URL}/api/friends/request/${requestId}/reject`,
         {},
         {
           headers: {

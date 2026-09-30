@@ -14,6 +14,7 @@ import {
 
 import Navbar from "../components/layout/Navbar";
 import profile from "../assets/profile.jpg";
+import { API_URL } from "../utils/apiConfig";
 
 import { getMyResume } from "../services/resumeService";
 
@@ -50,7 +51,7 @@ function Profile() {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:8000/api/profile",
+        `${API_URL}/api/profile`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -74,7 +75,7 @@ function Profile() {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:8000/api/auth/login-history",
+        `${API_URL}/api/auth/login-history`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -139,7 +140,7 @@ function Profile() {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:8000/api/friends/request",
+        `${API_URL}/api/friends/request`,
         {
           receiverId: user._id,
         },

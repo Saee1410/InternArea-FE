@@ -23,6 +23,7 @@ import {
 } from "@mui/icons-material";
 
 import axios from "axios";
+import { API_URL } from "../../utils/apiConfig";
 import { useTranslation } from "react-i18next";
 
 function CommunitySection() {
@@ -67,12 +68,12 @@ function CommunitySection() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-  "http://localhost:8000/api/public-posts",
-  {
-    headers: {
-      Authorization: token
-        ? `Bearer ${token}`
-        : "",
+        `${API_URL}/api/public-posts`,
+        {
+          headers: {
+            Authorization: token
+              ? `Bearer ${token}`
+              : "",
       "Accept-Language": i18n.language || "en",
     },
   }
@@ -196,7 +197,7 @@ function CommunitySection() {
       }
 
       const response = await axios.put(
-        `http://localhost:8000/api/public-posts/${postId}/like`,
+        `${API_URL}/api/public-posts/${postId}/like`,
         {},
         {
           headers: {
@@ -268,7 +269,7 @@ function CommunitySection() {
       }
 
       const response = await axios.post(
-        `http://localhost:8000/api/public-posts/${postId}/comment`,
+        `${API_URL}/api/public-posts/${postId}/comment`,
         {
           text: text.trim(),
         },
@@ -320,7 +321,7 @@ function CommunitySection() {
       }
 
       const response = await axios.post(
-        `http://localhost:8000/api/public-posts/${postId}/share`,
+        `${API_URL}/api/public-posts/${postId}/share`,
         {},
         {
           headers: {
@@ -969,364 +970,3 @@ function CommunitySection() {
 }
 
 export default CommunitySection;
-
-
-
-
-// import { useEffect, useState } from "react";
-// import {
-//   Box,
-//   Paper,
-//   Typography,
-//   IconButton,
-//   Stack,
-//   Avatar,
-// } from "@mui/material";
-
-// import {
-//   Favorite,
-//   FavoriteBorder,
-//   Comment,
-//   Share,
-//   ChevronLeft,
-//   ChevronRight,
-// } from "@mui/icons-material";
-
-// import axios from "axios";
-
-// function CommunitySection() {
-//   const [posts, setPosts] = useState([]);
-//   const [currentIndex, setCurrentIndex] = useState(0);
-
-//   // ================================
-//   // FETCH POSTS
-//   // ================================
-
-//   const fetchPosts = async () => {
-//     try {
-//       const token = localStorage.getItem("token");
-
-//       const response = await axios.get(
-//         "http://localhost:8000/api/public-posts",
-//         {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
-
-//       setPosts(response.data.posts || []);
-//     } catch (error) {
-//       console.error("Community Posts Error:", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchPosts();
-//   }, []);
-
-//   // ================================
-//   // AUTO SLIDER
-//   // ================================
-
-//   useEffect(() => {
-//     if (posts.length <= 1) return;
-
-//     const interval = setInterval(() => {
-//       setCurrentIndex((prev) =>
-//         prev === posts.length - 1 ? 0 : prev + 1
-//       );
-//     }, 5000);
-
-//     return () => clearInterval(interval);
-//   }, [posts.length]);
-
-//   // ================================
-//   // PREVIOUS
-//   // ================================
-
-//   const handlePrevious = () => {
-//     setCurrentIndex((prev) =>
-//       prev === 0 ? posts.length - 1 : prev - 1
-//     );
-//   };
-
-//   // ================================
-//   // NEXT
-//   // ================================
-
-//   const handleNext = () => {
-//     setCurrentIndex((prev) =>
-//       prev === posts.length - 1 ? 0 : prev + 1
-//     );
-//   };
-
-//   if (posts.length === 0) {
-//     return null;
-//   }
-
-//   const post = posts[currentIndex];
-
-//   return (
-//     <Box
-//       sx={{
-//         py: 7,
-//         px: { xs: 2, md: 5 },
-//         background: "#f8fafc",
-//       }}
-//     >
-//       {/* SECTION TITLE */}
-
-//       <Box
-//         sx={{
-//           maxWidth: 1100,
-//           mx: "auto",
-//           mb: 4,
-//           textAlign: "center",
-//         }}
-//       >
-//         <Typography
-//           variant="h4"
-//           sx={{
-//             fontWeight: 700,
-//             color: "#111827",
-//             mb: 1,
-//           }}
-//         >
-//           Community Posts
-//         </Typography>
-
-//         <Typography
-//           variant="body1"
-//           sx={{
-//             color: "#64748b",
-//           }}
-//         >
-//           See what students are sharing with the InternArea community
-//         </Typography>
-//       </Box>
-
-//       {/* SLIDER */}
-
-//       <Box
-//         sx={{
-//           maxWidth: 850,
-//           mx: "auto",
-//           position: "relative",
-//         }}
-//       >
-//         <Paper
-//           elevation={3}
-//           sx={{
-//             borderRadius: 4,
-//             overflow: "hidden",
-
-//             // Animation
-//             animation: "slideIn 0.6s ease",
-
-//             "@keyframes slideIn": {
-//               from: {
-//                 opacity: 0,
-//                 transform: "translateX(40px)",
-//               },
-//               to: {
-//                 opacity: 1,
-//                 transform: "translateX(0)",
-//               },
-//             },
-//           }}
-//         >
-//           {/* USER */}
-
-//           <Box
-//             sx={{
-//               p: 2.5,
-//               display: "flex",
-//               alignItems: "center",
-//               gap: 2,
-//             }}
-//           >
-//             <Avatar>
-//               {post.user?.name?.charAt(0) || "U"}
-//             </Avatar>
-
-//             <Box>
-//               <Typography fontWeight={700}>
-//                 {post.user?.name || "User"}
-//               </Typography>
-
-//               <Typography
-//                 variant="caption"
-//                 color="text.secondary"
-//               >
-//                 {new Date(post.createdAt).toLocaleString()}
-//               </Typography>
-//             </Box>
-//           </Box>
-
-//           {/* MEDIA */}
-
-//           {post.mediaType === "image" ? (
-//             <Box
-//               component="img"
-//               src={post.mediaUrl}
-//               alt="Community post"
-//               sx={{
-//                 width: "100%",
-//                 height: { xs: 300, md: 480 },
-//                 objectFit: "contain",
-//                 display: "block",
-//                 background: "#000",
-//               }}
-//             />
-//           ) : (
-//             <Box
-//               component="video"
-//               src={post.mediaUrl}
-//               controls
-//               sx={{
-//                 width: "100%",
-//                 height: { xs: 300, md: 480 },
-//                 objectFit: "contain",
-//                 display: "block",
-//                 background: "#000",
-//               }}
-//             />
-//           )}
-
-//           {/* CAPTION */}
-
-//           {post.caption && (
-//             <Box sx={{ px: 3, pt: 2 }}>
-//               <Typography>
-//                 {post.caption}
-//               </Typography>
-//             </Box>
-//           )}
-
-//           {/* ACTIONS */}
-
-//           <Stack
-//             direction="row"
-//             spacing={1}
-//             sx={{
-//               px: 2,
-//               py: 2,
-//             }}
-//           >
-//             <IconButton>
-//               {post.likes?.length > 0 ? (
-//                 <Favorite color="error" />
-//               ) : (
-//                 <FavoriteBorder />
-//               )}
-//             </IconButton>
-
-//             <Typography
-//               sx={{
-//                 display: "flex",
-//                 alignItems: "center",
-//                 mr: 2,
-//               }}
-//             >
-//               {post.likes?.length || 0}
-//             </Typography>
-
-//             <IconButton>
-//               <Comment />
-//             </IconButton>
-
-//             <Typography
-//               sx={{
-//                 display: "flex",
-//                 alignItems: "center",
-//                 mr: 2,
-//               }}
-//             >
-//               {post.comments?.length || 0}
-//             </Typography>
-
-//             <IconButton>
-//               <Share />
-//             </IconButton>
-//           </Stack>
-//         </Paper>
-
-//         {/* LEFT ARROW */}
-
-//         {posts.length > 1 && (
-//           <IconButton
-//             onClick={handlePrevious}
-//             sx={{
-//               position: "absolute",
-//               left: { xs: 5, md: -25 },
-//               top: "50%",
-//               transform: "translateY(-50%)",
-//               background: "#fff",
-//               boxShadow: 3,
-
-//               "&:hover": {
-//                 background: "#f1f5f9",
-//               },
-//             }}
-//           >
-//             <ChevronLeft />
-//           </IconButton>
-//         )}
-
-//         {/* RIGHT ARROW */}
-
-//         {posts.length > 1 && (
-//           <IconButton
-//             onClick={handleNext}
-//             sx={{
-//               position: "absolute",
-//               right: { xs: 5, md: -25 },
-//               top: "50%",
-//               transform: "translateY(-50%)",
-//               background: "#fff",
-//               boxShadow: 3,
-
-//               "&:hover": {
-//                 background: "#f1f5f9",
-//               },
-//             }}
-//           >
-//             <ChevronRight />
-//           </IconButton>
-//         )}
-//       </Box>
-
-//       {/* DOTS */}
-
-//       {posts.length > 1 && (
-//         <Stack
-//           direction="row"
-//           spacing={1}
-//           justifyContent="center"
-//           sx={{ mt: 3 }}
-//         >
-//           {posts.map((_, index) => (
-//             <Box
-//               key={index}
-//               onClick={() => setCurrentIndex(index)}
-//               sx={{
-//                 width: index === currentIndex ? 24 : 8,
-//                 height: 8,
-//                 borderRadius: 10,
-//                 background:
-//                   index === currentIndex
-//                     ? "#1976d2"
-//                     : "#cbd5e1",
-//                 cursor: "pointer",
-//                 transition: "all 0.3s ease",
-//               }}
-//             />
-//           ))}
-//         </Stack>
-//       )}
-//     </Box>
-//   );
-// }
-
-// export default CommunitySection;

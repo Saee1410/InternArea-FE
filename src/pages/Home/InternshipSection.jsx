@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import InternshipCard from "./InternshipCard";
+import { API_URL } from "../../utils/apiConfig";
 
 function InternshipSection() {
   const { t, i18n } = useTranslation();
@@ -42,7 +43,7 @@ function InternshipSection() {
       setLoading(true);
 
       const res = await axios.get(
-        "http://localhost:8000/api/internships",{
+        `${API_URL}/api/internships`,{
           params: {
             lang: i18n.language || "en", // Send the current language to the backend
           },
@@ -73,7 +74,7 @@ function InternshipSection() {
   const fetchJobs = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/jobs",
+        `${API_URL}/api/jobs`,
          {
     params: {
       lang: i18n.language || "en",

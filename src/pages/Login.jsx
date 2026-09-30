@@ -29,6 +29,8 @@ import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 
+import { API_URL } from "../utils/apiConfig";
+
 import logo2 from "../assets/logo2.jpg";
 
 
@@ -78,7 +80,7 @@ function Login() {
     try {
 
       const res = await axios.post(
-        "http://localhost:8000/api/auth/google",
+        `${API_URL}/api/auth/google`,
         {
           credential: response.credential
         }
@@ -139,7 +141,7 @@ function Login() {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:8000/api/auth/login",
+        `${API_URL}/api/auth/login`,
         formData
       );
 
@@ -234,7 +236,7 @@ function Login() {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:8000/api/auth/verify-login-otp",
+        `${API_URL}/api/auth/verify-login-otp`,
         {
           userId: otpUserId,
           otp: otp

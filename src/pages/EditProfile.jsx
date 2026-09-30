@@ -21,6 +21,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import Navbar from "../components/layout/Navbar";
+import { API_URL } from "../utils/apiConfig";
 
 function EditProfile() {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ function EditProfile() {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:8000/api/profile",
+        `${API_URL}/api/profile`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -143,7 +144,7 @@ function EditProfile() {
       const token = localStorage.getItem("token");
 
       const res = await axios.put(
-        "http://localhost:8000/api/profile",
+        `${API_URL}/api/profile`,
         formData,
         {
           headers: {

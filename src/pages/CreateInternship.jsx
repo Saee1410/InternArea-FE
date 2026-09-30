@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 
 import Navbar from "../components/layout/Navbar";
+import { API_URL } from "../utils/apiConfig";
 
 function CreateInternship() {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ function CreateInternship() {
 
     try {
       await axios.post(
-        "http://localhost:8000/api/internships",
+        `${API_URL}/api/internships`,
         formData
       );
 

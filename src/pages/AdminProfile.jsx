@@ -23,6 +23,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LoginIcon from "@mui/icons-material/Login";
 
+import { API_URL } from "../utils/apiConfig";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 
@@ -44,7 +45,7 @@ function AdminProfile() {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:8000/api/profile",
+        `${API_URL}/api/profile`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -69,7 +70,7 @@ function AdminProfile() {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:8000/api/auth/login-history",
+        `${API_URL}/api/auth/login-history`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

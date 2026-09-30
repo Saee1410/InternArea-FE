@@ -21,6 +21,7 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import InternshipCard from "./Home/InternshipCard";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import { API_URL } from "../utils/apiConfig";
 
 
 const Internships = () => {
@@ -54,7 +55,7 @@ const Internships = () => {
       setLoading(true);
 
       const res = await axios.get(
-        "http://localhost:8000/api/internships",
+        `${API_URL}/api/internships`,
          {
     params: {
       lang: i18n.language || "en",
