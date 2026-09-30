@@ -74,62 +74,215 @@ function Login() {
 
   };
 
-
   const handleGoogleLogin = async (response) => {
 
-    try {
+  try {
 
-      const res = await axios.post(
-        `${API_URL}/api/auth/google`,
-        {
-          credential: response.credential
-        }
+    console.log("🔥 GOOGLE LOGIN CLICKED");
+
+    console.log(
+      "Credential received:",
+      !!response?.credential
+    );
+
+    console.log(
+      "API URL:",
+      API_URL
+    );
+
+
+    if (!response?.credential) {
+
+      console.log(
+        "❌ Google credential not received"
       );
 
-      if (res.data.requiresOTP) {
-
-        setOtpUserId(res.data.userId);
-        setOtpEmail(res.data.email);
-        setShowOTP(true);
-
-        return;
-      }
-
-      const user = res.data.user;
-
-      localStorage.setItem(
-        "token",
-        res.data.token
-      );
-
-      localStorage.setItem(
-        "user",
-        JSON.stringify(user)
-      );
-
-      if (user.role === "admin") {
-
-        navigate("/admin/dashboard");
-
-      } else {
-
-        navigate("/");
-
-      }
-
-    }
-    catch (err) {
-
-      console.log(err);
-
-      alert(
-        err.response?.data?.message ||
-        t("login.googleLoginFailed")
-      );
+      return;
 
     }
 
-  };
+
+    console.log(
+      "📤 Sending Google login request..."
+    );
+
+
+    const res = await axios.post(
+      `${API_URL}/api/auth/google`,
+      {
+        credential: response.credential
+      }
+    );
+
+
+    console.log(
+      "✅ Backend response:",
+      res.data
+    );
+
+
+    // =====================================================
+    // OTP REQUIRED
+    // =====================================================
+
+    if (res.data.requiresOTP) {
+
+      console.log(
+        "🔐 OTP verification required"
+      );
+
+
+      setOtpUserId(
+        res.data.userId
+      );
+
+
+      setOtpEmail(
+        res.data.email
+      );
+
+
+      setShowOTP(true);
+
+
+      return;
+
+    }
+
+
+    // =====================================================
+    // NORMAL LOGIN
+    // =====================================================
+
+    const user =
+      res.data.user;
+
+
+    console.log(
+      "👤 Logged in user:",
+      user
+    );
+
+
+    localStorage.setItem(
+      "token",
+      res.data.token
+    );
+
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(user)
+    );
+
+
+    if (user.role === "admin") {
+
+      navigate(
+        "/admin/dashboard"
+      );
+
+    } else {
+
+      navigate("/");
+
+    }
+
+
+  }
+
+  catch (err) {
+
+    console.error(
+      "❌ GOOGLE LOGIN FRONTEND ERROR:",
+      err
+    );
+
+
+    console.error(
+      "❌ Backend Response:",
+      err.response?.data
+    );
+
+
+    console.error(
+      "❌ HTTP Status:",
+      err.response?.status
+    );
+
+
+    console.error(
+      "❌ Error Message:",
+      err.message
+    );
+
+
+    alert(
+      err.response?.data?.message ||
+      t("login.googleLoginFailed")
+    );
+
+  }
+
+};
+
+
+
+  // const handleGoogleLogin = async (response) => {
+
+  //   try {
+
+  //     const res = await axios.post(
+  //       `${API_URL}/api/auth/google`,
+  //       {
+  //         credential: response.credential
+  //       }
+  //     );
+
+  //     if (res.data.requiresOTP) {
+
+  //       setOtpUserId(res.data.userId);
+  //       setOtpEmail(res.data.email);
+  //       setShowOTP(true);
+
+  //       return;
+  //     }
+
+  //     const user = res.data.user;
+
+  //     localStorage.setItem(
+  //       "token",
+  //       res.data.token
+  //     );
+
+  //     localStorage.setItem(
+  //       "user",
+  //       JSON.stringify(user)
+  //     );
+
+  //     if (user.role === "admin") {
+
+  //       navigate("/admin/dashboard");
+
+  //     } else {
+
+  //       navigate("/");
+
+  //     }
+
+  //   }
+  //   catch (err) {
+
+  //     console.log(err);
+
+  //     alert(
+  //       err.response?.data?.message ||
+  //       t("login.googleLoginFailed")
+  //     );
+
+  //   }
+
+  // };
 
 
   const handleSubmit = async (e) => {
