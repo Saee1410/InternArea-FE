@@ -1,1450 +1,1450 @@
-import { useRef, useState } from "react";
-import axios from "axios";
+// import { useRef, useState } from "react";
+// import axios from "axios";
 
-import {
-  Box,
-  Paper,
-  Typography,
-  TextField,
-  Button,
-  InputAdornment,
-  IconButton,
-  Tabs,
-  Tab,
-  Checkbox,
-  FormControlLabel,
-  Link,
-} from "@mui/material";
+// import {
+//   Box,
+//   Paper,
+//   Typography,
+//   TextField,
+//   Button,
+//   InputAdornment,
+//   IconButton,
+//   Tabs,
+//   Tab,
+//   Checkbox,
+//   FormControlLabel,
+//   Link,
+// } from "@mui/material";
 
-import {
-  Visibility,
-  VisibilityOff,
-  Email,
-  Lock,
-} from "@mui/icons-material";
+// import {
+//   Visibility,
+//   VisibilityOff,
+//   Email,
+//   Lock,
+// } from "@mui/icons-material";
 
-import { GoogleLogin } from "@react-oauth/google";
+// import { GoogleLogin } from "@react-oauth/google";
 
-import {
-  useNavigate,
-  Link as RouterLink,
-} from "react-router-dom";
+// import {
+//   useNavigate,
+//   Link as RouterLink,
+// } from "react-router-dom";
 
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 
-import { API_URL } from "../utils/apiConfig";
+// import { API_URL } from "../utils/apiConfig";
 
-import logo2 from "../assets/logo2.jpg";
+// import logo2 from "../assets/logo2.jpg";
 
 
-function Login() {
+// function Login() {
 
-  const navigate = useNavigate();
+//   const navigate = useNavigate();
 
-  const { t } = useTranslation();
+//   const { t } = useTranslation();
 
 
-  // =====================================================
-  // STATES
-  // =====================================================
+//   // =====================================================
+//   // STATES
+//   // =====================================================
 
-  const [loading, setLoading] = useState(false);
+//   const [loading, setLoading] = useState(false);
 
-  const [showPassword, setShowPassword] = useState(false);
+//   const [showPassword, setShowPassword] = useState(false);
 
-  const [remember, setRemember] = useState(false);
+//   const [remember, setRemember] = useState(false);
 
-  const [loginType, setLoginType] = useState("student");
+//   const [loginType, setLoginType] = useState("student");
 
 
-  // =====================================================
-  // LOGIN FORM
-  // =====================================================
+//   // =====================================================
+//   // LOGIN FORM
+//   // =====================================================
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+//   const [formData, setFormData] = useState({
+//     email: "",
+//     password: "",
+//   });
 
 
-  // =====================================================
-  // OTP STATES
-  // =====================================================
+//   // =====================================================
+//   // OTP STATES
+//   // =====================================================
 
-  const [showOTP, setShowOTP] = useState(false);
+//   const [showOTP, setShowOTP] = useState(false);
 
-  const [otp, setOtp] = useState("");
+//   const [otp, setOtp] = useState("");
 
-  const [otpUserId, setOtpUserId] = useState(null);
+//   const [otpUserId, setOtpUserId] = useState(null);
 
-  const [otpEmail, setOtpEmail] = useState("");
+//   const [otpEmail, setOtpEmail] = useState("");
 
 
-  // =====================================================
-  // GOOGLE LOGIN DUPLICATE PROTECTION
-  // =====================================================
+//   // =====================================================
+//   // GOOGLE LOGIN DUPLICATE PROTECTION
+//   // =====================================================
 
-  const googleLoginInProgress = useRef(false);
+//   const googleLoginInProgress = useRef(false);
 
 
-  // =====================================================
-  // HANDLE INPUT CHANGE
-  // =====================================================
+//   // =====================================================
+//   // HANDLE INPUT CHANGE
+//   // =====================================================
 
-  const handleChange = (e) => {
+//   const handleChange = (e) => {
 
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+//     setFormData({
+//       ...formData,
+//       [e.target.name]: e.target.value,
+//     });
 
-  };
+//   };
 
 
-  // =====================================================
-  // GOOGLE LOGIN
-  // =====================================================
+//   // =====================================================
+//   // GOOGLE LOGIN
+//   // =====================================================
 
-  const handleGoogleLogin = async (response) => {
+//   const handleGoogleLogin = async (response) => {
 
-    // -----------------------------------------------
-    // Prevent duplicate Google callback
-    // -----------------------------------------------
+//     // -----------------------------------------------
+//     // Prevent duplicate Google callback
+//     // -----------------------------------------------
 
-    if (googleLoginInProgress.current) {
+//     if (googleLoginInProgress.current) {
 
-      console.log(
-        "⚠️ Google login already in progress"
-      );
+//       console.log(
+//         "⚠️ Google login already in progress"
+//       );
 
-      return;
-    }
+//       return;
+//     }
 
 
-    // -----------------------------------------------
-    // Check credential
-    // -----------------------------------------------
+//     // -----------------------------------------------
+//     // Check credential
+//     // -----------------------------------------------
 
-    if (!response?.credential) {
+//     if (!response?.credential) {
 
-      console.error(
-        "❌ Google credential not received"
-      );
+//       console.error(
+//         "❌ Google credential not received"
+//       );
 
-      alert(
-        t("login.googleLoginFailed") ||
-        "Google login failed"
-      );
+//       alert(
+//         t("login.googleLoginFailed") ||
+//         "Google login failed"
+//       );
 
-      return;
-    }
+//       return;
+//     }
 
 
-    try {
+//     try {
 
-      googleLoginInProgress.current = true;
+//       googleLoginInProgress.current = true;
 
-      setLoading(true);
+//       setLoading(true);
 
 
-      console.log(
-        "=========================================="
-      );
+//       console.log(
+//         "=========================================="
+//       );
 
-      console.log(
-        "🔥 GOOGLE LOGIN STARTED"
-      );
+//       console.log(
+//         "🔥 GOOGLE LOGIN STARTED"
+//       );
 
-      console.log(
-        "Credential received:",
-        !!response.credential
-      );
+//       console.log(
+//         "Credential received:",
+//         !!response.credential
+//       );
 
-      console.log(
-        "API URL:",
-        API_URL
-      );
+//       console.log(
+//         "API URL:",
+//         API_URL
+//       );
 
-      console.log(
-        "=========================================="
-      );
+//       console.log(
+//         "=========================================="
+//       );
 
 
-      // -----------------------------------------------
-      // Send Google credential to backend
-      // -----------------------------------------------
+//       // -----------------------------------------------
+//       // Send Google credential to backend
+//       // -----------------------------------------------
 
-      const res = await axios.post(
-        `${API_URL}/api/auth/google`,
-        {
-          credential: response.credential,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+//       const res = await axios.post(
+//         `${API_URL}/api/auth/google`,
+//         {
+//           credential: response.credential,
+//         },
+//         {
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       );
 
 
-      console.log(
-        "✅ Google backend response:",
-        res.data
-      );
+//       console.log(
+//         "✅ Google backend response:",
+//         res.data
+//       );
 
 
-      // =================================================
-      // OTP REQUIRED
-      // =================================================
+//       // =================================================
+//       // OTP REQUIRED
+//       // =================================================
 
-      if (res.data?.requiresOTP) {
+//       if (res.data?.requiresOTP) {
 
-        console.log(
-          "🔐 Google login requires OTP"
-        );
+//         console.log(
+//           "🔐 Google login requires OTP"
+//         );
 
 
-        // Validate backend response
-        if (!res.data.userId) {
+//         // Validate backend response
+//         if (!res.data.userId) {
 
-          console.error(
-            "❌ Backend did not return userId"
-          );
+//           console.error(
+//             "❌ Backend did not return userId"
+//           );
 
-          alert(
-            "OTP verification could not start. User ID missing."
-          );
+//           alert(
+//             "OTP verification could not start. User ID missing."
+//           );
 
-          return;
-        }
+//           return;
+//         }
 
 
-        if (!res.data.email) {
+//         if (!res.data.email) {
 
-          console.error(
-            "❌ Backend did not return email"
-          );
+//           console.error(
+//             "❌ Backend did not return email"
+//           );
 
-          alert(
-            "OTP verification could not start. Email missing."
-          );
+//           alert(
+//             "OTP verification could not start. Email missing."
+//           );
 
-          return;
-        }
+//           return;
+//         }
 
 
-        console.log(
-          "👤 OTP User ID:",
-          res.data.userId
-        );
+//         console.log(
+//           "👤 OTP User ID:",
+//           res.data.userId
+//         );
 
-        console.log(
-          "📧 OTP Email:",
-          res.data.email
-        );
+//         console.log(
+//           "📧 OTP Email:",
+//           res.data.email
+//         );
 
 
-        // -----------------------------------------------
-        // Save OTP information
-        // -----------------------------------------------
+//         // -----------------------------------------------
+//         // Save OTP information
+//         // -----------------------------------------------
 
-        setOtpUserId(res.data.userId);
+//         setOtpUserId(res.data.userId);
 
-        setOtpEmail(res.data.email);
+//         setOtpEmail(res.data.email);
 
-        setOtp("");
+//         setOtp("");
 
-        setShowOTP(true);
+//         setShowOTP(true);
 
 
-        console.log(
-          "✅ OTP screen opened"
-        );
+//         console.log(
+//           "✅ OTP screen opened"
+//         );
 
 
-        return;
-      }
+//         return;
+//       }
 
 
-      // =================================================
-      // NORMAL GOOGLE LOGIN
-      // =================================================
+//       // =================================================
+//       // NORMAL GOOGLE LOGIN
+//       // =================================================
 
-      if (!res.data?.token || !res.data?.user) {
+//       if (!res.data?.token || !res.data?.user) {
 
-        console.error(
-          "❌ Invalid Google login response",
-          res.data
-        );
+//         console.error(
+//           "❌ Invalid Google login response",
+//           res.data
+//         );
 
-        alert(
-          "Invalid response received from server."
-        );
+//         alert(
+//           "Invalid response received from server."
+//         );
 
-        return;
-      }
+//         return;
+//       }
 
 
-      const user = res.data.user;
+//       const user = res.data.user;
 
 
-      console.log(
-        "👤 Google user:",
-        user
-      );
+//       console.log(
+//         "👤 Google user:",
+//         user
+//       );
 
 
-      // -----------------------------------------------
-      // Save login data
-      // -----------------------------------------------
+//       // -----------------------------------------------
+//       // Save login data
+//       // -----------------------------------------------
 
-      localStorage.setItem(
-        "token",
-        res.data.token
-      );
+//       localStorage.setItem(
+//         "token",
+//         res.data.token
+//       );
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(user)
-      );
+//       localStorage.setItem(
+//         "user",
+//         JSON.stringify(user)
+//       );
 
 
-      // -----------------------------------------------
-      // Redirect
-      // -----------------------------------------------
+//       // -----------------------------------------------
+//       // Redirect
+//       // -----------------------------------------------
 
-      if (user.role === "admin") {
+//       if (user.role === "admin") {
 
-        navigate("/admin/dashboard");
+//         navigate("/admin/dashboard");
 
-      } else {
+//       } else {
 
-        navigate("/");
+//         navigate("/");
 
-      }
+//       }
 
 
-    } catch (error) {
+//     } catch (error) {
 
-      console.error(
-        "❌ GOOGLE LOGIN ERROR:",
-        error
-      );
+//       console.error(
+//         "❌ GOOGLE LOGIN ERROR:",
+//         error
+//       );
 
 
-      console.error(
-        "❌ Backend response:",
-        error.response?.data
-      );
+//       console.error(
+//         "❌ Backend response:",
+//         error.response?.data
+//       );
 
 
-      console.error(
-        "❌ HTTP status:",
-        error.response?.status
-      );
+//       console.error(
+//         "❌ HTTP status:",
+//         error.response?.status
+//       );
 
 
-      console.error(
-        "❌ Error message:",
-        error.message
-      );
+//       console.error(
+//         "❌ Error message:",
+//         error.message
+//       );
 
 
-      alert(
-        error.response?.data?.message ||
-        t("login.googleLoginFailed") ||
-        "Google login failed"
-      );
+//       alert(
+//         error.response?.data?.message ||
+//         t("login.googleLoginFailed") ||
+//         "Google login failed"
+//       );
 
 
-    } finally {
+//     } finally {
 
-      setLoading(false);
+//       setLoading(false);
 
-      googleLoginInProgress.current = false;
+//       googleLoginInProgress.current = false;
 
-    }
+//     }
 
-  };
+//   };
 
 
-  // =====================================================
-  // NORMAL EMAIL/PASSWORD LOGIN
-  // =====================================================
+//   // =====================================================
+//   // NORMAL EMAIL/PASSWORD LOGIN
+//   // =====================================================
 
-  const handleSubmit = async (e) => {
+//   const handleSubmit = async (e) => {
 
-    e.preventDefault();
+//     e.preventDefault();
 
 
-    if (loading) {
-      return;
-    }
+//     if (loading) {
+//       return;
+//     }
 
 
-    // -----------------------------------------------
-    // Basic validation
-    // -----------------------------------------------
+//     // -----------------------------------------------
+//     // Basic validation
+//     // -----------------------------------------------
 
-    if (!formData.email.trim()) {
+//     if (!formData.email.trim()) {
 
-      alert(
-        t("login.emailRequired") ||
-        "Please enter your email"
-      );
+//       alert(
+//         t("login.emailRequired") ||
+//         "Please enter your email"
+//       );
 
-      return;
-    }
+//       return;
+//     }
 
 
-    if (!formData.password) {
+//     if (!formData.password) {
 
-      alert(
-        t("login.passwordRequired") ||
-        "Please enter your password"
-      );
+//       alert(
+//         t("login.passwordRequired") ||
+//         "Please enter your password"
+//       );
 
-      return;
-    }
+//       return;
+//     }
 
 
-    try {
+//     try {
 
-      setLoading(true);
+//       setLoading(true);
 
 
-      console.log(
-        "📤 Normal login request..."
-      );
+//       console.log(
+//         "📤 Normal login request..."
+//       );
 
 
-      const res = await axios.post(
-        `${API_URL}/api/auth/login`,
-        {
-          email: formData.email.trim(),
-          password: formData.password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+//       const res = await axios.post(
+//         `${API_URL}/api/auth/login`,
+//         {
+//           email: formData.email.trim(),
+//           password: formData.password,
+//         },
+//         {
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       );
 
 
-      console.log(
-        "✅ Normal login response:",
-        res.data
-      );
+//       console.log(
+//         "✅ Normal login response:",
+//         res.data
+//       );
 
 
-      // =================================================
-      // OTP REQUIRED
-      // =================================================
+//       // =================================================
+//       // OTP REQUIRED
+//       // =================================================
 
-      if (res.data?.requiresOTP) {
+//       if (res.data?.requiresOTP) {
 
-        console.log(
-          "🔐 Normal login requires OTP"
-        );
+//         console.log(
+//           "🔐 Normal login requires OTP"
+//         );
 
 
-        if (!res.data.userId) {
+//         if (!res.data.userId) {
 
-          alert(
-            "OTP verification could not start. User ID missing."
-          );
+//           alert(
+//             "OTP verification could not start. User ID missing."
+//           );
 
-          return;
-        }
+//           return;
+//         }
 
 
-        setOtpUserId(res.data.userId);
+//         setOtpUserId(res.data.userId);
 
-        setOtpEmail(
-          res.data.email || formData.email
-        );
+//         setOtpEmail(
+//           res.data.email || formData.email
+//         );
 
-        setOtp("");
+//         setOtp("");
 
-        setShowOTP(true);
+//         setShowOTP(true);
 
 
-        return;
-      }
+//         return;
+//       }
 
 
-      // =================================================
-      // NORMAL LOGIN SUCCESS
-      // =================================================
+//       // =================================================
+//       // NORMAL LOGIN SUCCESS
+//       // =================================================
 
-      if (!res.data?.token || !res.data?.user) {
+//       if (!res.data?.token || !res.data?.user) {
 
-        alert(
-          "Invalid response received from server."
-        );
+//         alert(
+//           "Invalid response received from server."
+//         );
 
-        return;
-      }
+//         return;
+//       }
 
 
-      const user = res.data.user;
+//       const user = res.data.user;
 
 
-      // -----------------------------------------------
-      // Student/Admin validation
-      // -----------------------------------------------
+//       // -----------------------------------------------
+//       // Student/Admin validation
+//       // -----------------------------------------------
 
-      if (
-        loginType === "admin" &&
-        user.role !== "admin"
-      ) {
+//       if (
+//         loginType === "admin" &&
+//         user.role !== "admin"
+//       ) {
 
-        alert(
-          t("login.studentOption") ||
-          "This account is not an admin account."
-        );
+//         alert(
+//           t("login.studentOption") ||
+//           "This account is not an admin account."
+//         );
 
-        return;
-      }
+//         return;
+//       }
 
 
-      if (
-        loginType === "student" &&
-        user.role === "admin"
-      ) {
+//       if (
+//         loginType === "student" &&
+//         user.role === "admin"
+//       ) {
 
-        alert(
-          t("login.adminOption") ||
-          "Please use Admin Login."
-        );
+//         alert(
+//           t("login.adminOption") ||
+//           "Please use Admin Login."
+//         );
 
-        return;
-      }
+//         return;
+//       }
 
 
-      // -----------------------------------------------
-      // Save user
-      // -----------------------------------------------
+//       // -----------------------------------------------
+//       // Save user
+//       // -----------------------------------------------
 
-      localStorage.setItem(
-        "token",
-        res.data.token
-      );
+//       localStorage.setItem(
+//         "token",
+//         res.data.token
+//       );
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(user)
-      );
+//       localStorage.setItem(
+//         "user",
+//         JSON.stringify(user)
+//       );
 
 
-      // -----------------------------------------------
-      // Redirect
-      // -----------------------------------------------
+//       // -----------------------------------------------
+//       // Redirect
+//       // -----------------------------------------------
 
-      if (user.role === "admin") {
+//       if (user.role === "admin") {
 
-        navigate("/admin/dashboard");
+//         navigate("/admin/dashboard");
 
-      } else {
+//       } else {
 
-        navigate("/");
+//         navigate("/");
 
-      }
+//       }
 
 
-    } catch (error) {
+//     } catch (error) {
 
-      console.error(
-        "❌ NORMAL LOGIN ERROR:",
-        error
-      );
+//       console.error(
+//         "❌ NORMAL LOGIN ERROR:",
+//         error
+//       );
 
 
-      console.error(
-        "❌ Backend response:",
-        error.response?.data
-      );
+//       console.error(
+//         "❌ Backend response:",
+//         error.response?.data
+//       );
 
 
-      alert(
-        error.response?.data?.message ||
-        t("login.loginFailed") ||
-        "Login failed"
-      );
+//       alert(
+//         error.response?.data?.message ||
+//         t("login.loginFailed") ||
+//         "Login failed"
+//       );
 
 
-    } finally {
+//     } finally {
 
-      setLoading(false);
+//       setLoading(false);
 
-    }
+//     }
 
-  };
+//   };
 
 
-  // =====================================================
-  // VERIFY LOGIN OTP
-  // =====================================================
+//   // =====================================================
+//   // VERIFY LOGIN OTP
+//   // =====================================================
 
-  const handleVerifyOTP = async () => {
+//   const handleVerifyOTP = async () => {
 
-    // -----------------------------------------------
-    // Validate OTP
-    // -----------------------------------------------
+//     // -----------------------------------------------
+//     // Validate OTP
+//     // -----------------------------------------------
 
-    if (!otpUserId) {
+//     if (!otpUserId) {
 
-      alert(
-        "User information is missing. Please login again."
-      );
+//       alert(
+//         "User information is missing. Please login again."
+//       );
 
-      return;
-    }
+//       return;
+//     }
 
 
-    if (!otp || otp.length !== 6) {
+//     if (!otp || otp.length !== 6) {
 
-      alert(
-        t("login.enterOTP") ||
-        "Please enter a valid 6 digit OTP"
-      );
+//       alert(
+//         t("login.enterOTP") ||
+//         "Please enter a valid 6 digit OTP"
+//       );
 
-      return;
-    }
+//       return;
+//     }
 
 
-    if (loading) {
-      return;
-    }
+//     if (loading) {
+//       return;
+//     }
 
 
-    try {
+//     try {
 
-      setLoading(true);
+//       setLoading(true);
 
 
-      console.log(
-        "=========================================="
-      );
+//       console.log(
+//         "=========================================="
+//       );
 
-      console.log(
-        "🔐 VERIFYING LOGIN OTP"
-      );
+//       console.log(
+//         "🔐 VERIFYING LOGIN OTP"
+//       );
 
-      console.log(
-        "👤 User ID:",
-        otpUserId
-      );
+//       console.log(
+//         "👤 User ID:",
+//         otpUserId
+//       );
 
-      console.log(
-        "🔢 OTP length:",
-        otp.length
-      );
+//       console.log(
+//         "🔢 OTP length:",
+//         otp.length
+//       );
 
-      console.log(
-        "=========================================="
-      );
+//       console.log(
+//         "=========================================="
+//       );
 
 
-      const res = await axios.post(
-        `${API_URL}/api/auth/verify-login-otp`,
-        {
-          userId: otpUserId,
-          otp: otp,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+//       const res = await axios.post(
+//         `${API_URL}/api/auth/verify-login-otp`,
+//         {
+//           userId: otpUserId,
+//           otp: otp,
+//         },
+//         {
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       );
 
 
-      console.log(
-        "✅ OTP verification response:",
-        res.data
-      );
+//       console.log(
+//         "✅ OTP verification response:",
+//         res.data
+//       );
 
 
-      // =================================================
-      // CHECK RESPONSE
-      // =================================================
+//       // =================================================
+//       // CHECK RESPONSE
+//       // =================================================
 
-      if (!res.data?.token || !res.data?.user) {
+//       if (!res.data?.token || !res.data?.user) {
 
-        alert(
-          "Invalid response received from server."
-        );
+//         alert(
+//           "Invalid response received from server."
+//         );
 
-        return;
-      }
+//         return;
+//       }
 
 
-      const user = res.data.user;
+//       const user = res.data.user;
 
 
-      // =================================================
-      // STUDENT / ADMIN VALIDATION
-      // =================================================
+//       // =================================================
+//       // STUDENT / ADMIN VALIDATION
+//       // =================================================
 
-      if (
-        loginType === "admin" &&
-        user.role !== "admin"
-      ) {
+//       if (
+//         loginType === "admin" &&
+//         user.role !== "admin"
+//       ) {
 
-        alert(
-          t("login.studentOption") ||
-          "This account is not an admin account."
-        );
+//         alert(
+//           t("login.studentOption") ||
+//           "This account is not an admin account."
+//         );
 
-        return;
-      }
+//         return;
+//       }
 
 
-      if (
-        loginType === "student" &&
-        user.role === "admin"
-      ) {
+//       if (
+//         loginType === "student" &&
+//         user.role === "admin"
+//       ) {
 
-        alert(
-          t("login.adminOption") ||
-          "Please use Admin Login."
-        );
+//         alert(
+//           t("login.adminOption") ||
+//           "Please use Admin Login."
+//         );
 
-        return;
-      }
+//         return;
+//       }
 
 
-      // =================================================
-      // SAVE LOGIN
-      // =================================================
+//       // =================================================
+//       // SAVE LOGIN
+//       // =================================================
 
-      localStorage.setItem(
-        "token",
-        res.data.token
-      );
+//       localStorage.setItem(
+//         "token",
+//         res.data.token
+//       );
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(user)
-      );
+//       localStorage.setItem(
+//         "user",
+//         JSON.stringify(user)
+//       );
 
 
-      console.log(
-        "✅ LOGIN SUCCESSFUL"
-      );
+//       console.log(
+//         "✅ LOGIN SUCCESSFUL"
+//       );
 
 
-      // =================================================
-      // REDIRECT
-      // =================================================
+//       // =================================================
+//       // REDIRECT
+//       // =================================================
 
-      if (user.role === "admin") {
+//       if (user.role === "admin") {
 
-        navigate("/admin/dashboard");
+//         navigate("/admin/dashboard");
 
-      } else {
+//       } else {
 
-        navigate("/");
+//         navigate("/");
 
-      }
+//       }
 
 
-    } catch (error) {
+//     } catch (error) {
 
-      console.error(
-        "❌ OTP VERIFICATION ERROR:",
-        error
-      );
+//       console.error(
+//         "❌ OTP VERIFICATION ERROR:",
+//         error
+//       );
 
 
-      console.error(
-        "❌ Backend response:",
-        error.response?.data
-      );
+//       console.error(
+//         "❌ Backend response:",
+//         error.response?.data
+//       );
 
 
-      console.error(
-        "❌ HTTP status:",
-        error.response?.status
-      );
+//       console.error(
+//         "❌ HTTP status:",
+//         error.response?.status
+//       );
 
 
-      alert(
-        error.response?.data?.message ||
-        "Invalid or expired OTP"
-      );
+//       alert(
+//         error.response?.data?.message ||
+//         "Invalid or expired OTP"
+//       );
 
 
-    } finally {
+//     } finally {
 
-      setLoading(false);
+//       setLoading(false);
 
-    }
+//     }
 
-  };
+//   };
 
 
-  // =====================================================
-  // BACK TO LOGIN
-  // =====================================================
+//   // =====================================================
+//   // BACK TO LOGIN
+//   // =====================================================
 
-  const handleBackToLogin = () => {
+//   const handleBackToLogin = () => {
 
-    setShowOTP(false);
+//     setShowOTP(false);
 
-    setOtp("");
+//     setOtp("");
 
-    setOtpUserId(null);
+//     setOtpUserId(null);
 
-    setOtpEmail("");
+//     setOtpEmail("");
 
-    setLoading(false);
+//     setLoading(false);
 
-  };
+//   };
 
 
-  // =====================================================
-  // OTP SCREEN
-  // =====================================================
+//   // =====================================================
+//   // OTP SCREEN
+//   // =====================================================
 
-  if (showOTP) {
+//   if (showOTP) {
 
-    return (
+//     return (
 
-      <Box
-        sx={{
-          minHeight: "100vh",
+//       <Box
+//         sx={{
+//           minHeight: "100vh",
 
-          display: "flex",
+//           display: "flex",
 
-          alignItems: "center",
+//           alignItems: "center",
 
-          justifyContent: "center",
+//           justifyContent: "center",
 
-          backgroundImage: `linear-gradient(
-            rgba(255,255,255,0.75),
-            rgba(255,255,255,0.75)
-          ),url(${logo2})`,
+//           backgroundImage: `linear-gradient(
+//             rgba(255,255,255,0.75),
+//             rgba(255,255,255,0.75)
+//           ),url(${logo2})`,
 
-          backgroundSize: "cover",
+//           backgroundSize: "cover",
 
-          backgroundPosition: "center",
+//           backgroundPosition: "center",
 
-          p: 3,
-        }}
-      >
+//           p: 3,
+//         }}
+//       >
 
-        <Paper
-          elevation={8}
-          sx={{
-            width: "100%",
+//         <Paper
+//           elevation={8}
+//           sx={{
+//             width: "100%",
 
-            maxWidth: 520,
+//             maxWidth: 520,
 
-            p: 5,
+//             p: 5,
 
-            borderRadius: 5,
+//             borderRadius: 5,
 
-            backdropFilter: "blur(10px)",
-          }}
-        >
+//             backdropFilter: "blur(10px)",
+//           }}
+//         >
 
-          {/* ==========================================
-              LOGO
-          ========================================== */}
+//           {/* ==========================================
+//               LOGO
+//           ========================================== */}
 
-          <Box
-            textAlign="center"
-          >
+//           <Box
+//             textAlign="center"
+//           >
 
-            <Box
-              component="img"
+//             <Box
+//               component="img"
 
-              src={logo2}
+//               src={logo2}
 
-              sx={{
-                width: 90,
+//               sx={{
+//                 width: 90,
 
-                height: 90,
+//                 height: 90,
 
-                borderRadius: "50%",
+//                 borderRadius: "50%",
 
-                objectFit: "cover",
+//                 objectFit: "cover",
 
-                mb: 2,
-              }}
-            />
+//                 mb: 2,
+//               }}
+//             />
 
 
-            <Typography
-              variant="h4"
-              fontWeight="bold"
-            >
-              Verify Login
-            </Typography>
+//             <Typography
+//               variant="h4"
+//               fontWeight="bold"
+//             >
+//               Verify Login
+//             </Typography>
 
 
-            <Typography
-              color="text.secondary"
-              mt={1}
-            >
-              OTP has been sent to
-            </Typography>
+//             <Typography
+//               color="text.secondary"
+//               mt={1}
+//             >
+//               OTP has been sent to
+//             </Typography>
 
 
-            <Typography
-              fontWeight="bold"
-              mt={1}
-            >
-              {otpEmail}
-            </Typography>
+//             <Typography
+//               fontWeight="bold"
+//               mt={1}
+//             >
+//               {otpEmail}
+//             </Typography>
 
-          </Box>
+//           </Box>
 
 
-          {/* ==========================================
-              OTP FORM
-          ========================================== */}
+//           {/* ==========================================
+//               OTP FORM
+//           ========================================== */}
 
-          <Box
-            sx={{
-              mt: 4,
+//           <Box
+//             sx={{
+//               mt: 4,
 
-              display: "flex",
+//               display: "flex",
 
-              flexDirection: "column",
+//               flexDirection: "column",
 
-              gap: 3,
-            }}
-          >
+//               gap: 3,
+//             }}
+//           >
 
-            <TextField
-              label="Enter 6 Digit OTP"
+//             <TextField
+//               label="Enter 6 Digit OTP"
 
-              value={otp}
+//               value={otp}
 
-              onChange={(e) => {
+//               onChange={(e) => {
 
-                const value =
-                  e.target.value
-                    .replace(/\D/g, "")
-                    .slice(0, 6);
+//                 const value =
+//                   e.target.value
+//                     .replace(/\D/g, "")
+//                     .slice(0, 6);
 
-                setOtp(value);
+//                 setOtp(value);
 
-              }}
+//               }}
 
-              fullWidth
+//               fullWidth
 
-              autoFocus
+//               autoFocus
 
-              inputProps={{
-                maxLength: 6,
+//               inputProps={{
+//                 maxLength: 6,
 
-                inputMode: "numeric",
+//                 inputMode: "numeric",
 
-                autoComplete: "one-time-code",
-              }}
-            />
+//                 autoComplete: "one-time-code",
+//               }}
+//             />
 
 
-            <Button
-              variant="contained"
+//             <Button
+//               variant="contained"
 
-              size="large"
+//               size="large"
 
-              disabled={
-                loading ||
-                otp.length !== 6
-              }
+//               disabled={
+//                 loading ||
+//                 otp.length !== 6
+//               }
 
-              onClick={handleVerifyOTP}
+//               onClick={handleVerifyOTP}
 
-              sx={{
-                py: 1.5,
+//               sx={{
+//                 py: 1.5,
 
-                borderRadius: 2,
+//                 borderRadius: 2,
 
-                background: "#008BDC",
+//                 background: "#008BDC",
 
-                fontSize: 18,
+//                 fontSize: 18,
 
-                "&:hover": {
-                  background: "#0075b8",
-                },
-              }}
-            >
+//                 "&:hover": {
+//                   background: "#0075b8",
+//                 },
+//               }}
+//             >
 
-              {loading
-                ? "Verifying..."
-                : "Verify OTP"}
+//               {loading
+//                 ? "Verifying..."
+//                 : "Verify OTP"}
 
-            </Button>
+//             </Button>
 
 
-            <Button
-              variant="text"
+//             <Button
+//               variant="text"
 
-              disabled={loading}
+//               disabled={loading}
 
-              onClick={handleBackToLogin}
-            >
-              Back to Login
-            </Button>
+//               onClick={handleBackToLogin}
+//             >
+//               Back to Login
+//             </Button>
 
-          </Box>
+//           </Box>
 
-        </Paper>
+//         </Paper>
 
-      </Box>
+//       </Box>
 
-    );
+//     );
 
-  }
+//   }
 
 
-  // =====================================================
-  // MAIN LOGIN SCREEN
-  // =====================================================
+//   // =====================================================
+//   // MAIN LOGIN SCREEN
+//   // =====================================================
 
-  return (
+//   return (
 
-    <Box
-      sx={{
-        minHeight: "100vh",
+//     <Box
+//       sx={{
+//         minHeight: "100vh",
 
-        display: "flex",
+//         display: "flex",
 
-        alignItems: "center",
+//         alignItems: "center",
 
-        justifyContent: "center",
+//         justifyContent: "center",
 
-        backgroundImage: `linear-gradient(
-          rgba(255,255,255,0.75),
-          rgba(255,255,255,0.75)
-        ),url(${logo2})`,
+//         backgroundImage: `linear-gradient(
+//           rgba(255,255,255,0.75),
+//           rgba(255,255,255,0.75)
+//         ),url(${logo2})`,
 
-        backgroundSize: "cover",
+//         backgroundSize: "cover",
 
-        backgroundPosition: "center",
+//         backgroundPosition: "center",
 
-        p: 3,
-      }}
-    >
+//         p: 3,
+//       }}
+//     >
 
-      <Paper
-        elevation={8}
+//       <Paper
+//         elevation={8}
 
-        sx={{
-          width: "100%",
+//         sx={{
+//           width: "100%",
 
-          maxWidth: 520,
+//           maxWidth: 520,
 
-          p: 5,
+//           p: 5,
 
-          borderRadius: 5,
+//           borderRadius: 5,
 
-          backdropFilter: "blur(10px)",
-        }}
-      >
+//           backdropFilter: "blur(10px)",
+//         }}
+//       >
 
-        {/* ==========================================
-            LOGO + TITLE
-        ========================================== */}
+//         {/* ==========================================
+//             LOGO + TITLE
+//         ========================================== */}
 
-        <Box textAlign="center">
+//         <Box textAlign="center">
 
-          <Box
-            component="img"
+//           <Box
+//             component="img"
 
-            src={logo2}
+//             src={logo2}
 
-            sx={{
-              width: 90,
+//             sx={{
+//               width: 90,
 
-              height: 90,
+//               height: 90,
 
-              borderRadius: "50%",
+//               borderRadius: "50%",
 
-              objectFit: "cover",
+//               objectFit: "cover",
 
-              mb: 2,
-            }}
-          />
+//               mb: 2,
+//             }}
+//           />
 
 
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-          >
-            {t("login.title")}
-          </Typography>
+//           <Typography
+//             variant="h4"
+//             fontWeight="bold"
+//           >
+//             {t("login.title")}
+//           </Typography>
 
 
-          <Typography
-            color="text.secondary"
-            mt={1}
-          >
-            {t("login.subtitle")}
-          </Typography>
+//           <Typography
+//             color="text.secondary"
+//             mt={1}
+//           >
+//             {t("login.subtitle")}
+//           </Typography>
 
-        </Box>
+//         </Box>
 
 
-        {/* ==========================================
-            STUDENT / ADMIN TABS
-        ========================================== */}
+//         {/* ==========================================
+//             STUDENT / ADMIN TABS
+//         ========================================== */}
 
-        <Tabs
-          value={loginType}
+//         <Tabs
+//           value={loginType}
 
-          onChange={(e, value) => {
+//           onChange={(e, value) => {
 
-            setLoginType(value);
+//             setLoginType(value);
 
-          }}
+//           }}
 
-          variant="fullWidth"
+//           variant="fullWidth"
 
-          sx={{
-            mt: 4,
+//           sx={{
+//             mt: 4,
 
-            background: "#f3f4f6",
+//             background: "#f3f4f6",
 
-            borderRadius: 2,
-          }}
-        >
+//             borderRadius: 2,
+//           }}
+//         >
 
-          <Tab
-            value="student"
-            label={t("login.student")}
-          />
+//           <Tab
+//             value="student"
+//             label={t("login.student")}
+//           />
 
-          <Tab
-            value="admin"
-            label={t("login.admin")}
-          />
+//           <Tab
+//             value="admin"
+//             label={t("login.admin")}
+//           />
 
-        </Tabs>
+//         </Tabs>
 
 
-        {/* ==========================================
-            LOGIN FORM
-        ========================================== */}
+//         {/* ==========================================
+//             LOGIN FORM
+//         ========================================== */}
 
-        <Box
-          component="form"
+//         <Box
+//           component="form"
 
-          onSubmit={handleSubmit}
+//           onSubmit={handleSubmit}
 
-          sx={{
-            mt: 4,
+//           sx={{
+//             mt: 4,
 
-            display: "flex",
+//             display: "flex",
 
-            flexDirection: "column",
+//             flexDirection: "column",
 
-            gap: 3,
-          }}
-        >
+//             gap: 3,
+//           }}
+//         >
 
-          {/* EMAIL */}
+//           {/* EMAIL */}
 
-          <TextField
+//           <TextField
 
-            label={t("login.email")}
+//             label={t("login.email")}
 
-            name="email"
+//             name="email"
 
-            value={formData.email}
+//             value={formData.email}
 
-            onChange={handleChange}
+//             onChange={handleChange}
 
-            fullWidth
+//             fullWidth
 
-            type="email"
+//             type="email"
 
-            autoComplete="email"
+//             autoComplete="email"
 
-            InputProps={{
+//             InputProps={{
 
-              startAdornment: (
+//               startAdornment: (
 
-                <InputAdornment position="start">
+//                 <InputAdornment position="start">
 
-                  <Email color="primary" />
+//                   <Email color="primary" />
 
-                </InputAdornment>
+//                 </InputAdornment>
 
-              ),
+//               ),
 
-            }}
+//             }}
 
-          />
+//           />
 
 
-          {/* PASSWORD */}
+//           {/* PASSWORD */}
 
-          <TextField
+//           <TextField
 
-            label={t("login.password")}
+//             label={t("login.password")}
 
-            name="password"
+//             name="password"
 
-            type={
-              showPassword
-                ? "text"
-                : "password"
-            }
+//             type={
+//               showPassword
+//                 ? "text"
+//                 : "password"
+//             }
 
-            value={formData.password}
+//             value={formData.password}
 
-            onChange={handleChange}
+//             onChange={handleChange}
 
-            fullWidth
+//             fullWidth
 
-            autoComplete="current-password"
+//             autoComplete="current-password"
 
-            InputProps={{
+//             InputProps={{
 
-              startAdornment: (
+//               startAdornment: (
 
-                <InputAdornment position="start">
+//                 <InputAdornment position="start">
 
-                  <Lock color="primary" />
+//                   <Lock color="primary" />
 
-                </InputAdornment>
+//                 </InputAdornment>
 
-              ),
+//               ),
 
-              endAdornment: (
+//               endAdornment: (
 
-                <IconButton
+//                 <IconButton
 
-                  onClick={() =>
-                    setShowPassword(
-                      !showPassword
-                    )
-                  }
+//                   onClick={() =>
+//                     setShowPassword(
+//                       !showPassword
+//                     )
+//                   }
 
-                  edge="end"
-                >
+//                   edge="end"
+//                 >
 
-                  {showPassword
+//                   {showPassword
 
-                    ? <VisibilityOff />
+//                     ? <VisibilityOff />
 
-                    : <Visibility />
+//                     : <Visibility />
 
-                  }
+//                   }
 
-                </IconButton>
+//                 </IconButton>
 
-              ),
+//               ),
 
-            }}
+//             }}
 
-          />
+//           />
 
 
-          {/* REMEMBER + FORGOT */}
+//           {/* REMEMBER + FORGOT */}
 
-          <Box
-            display="flex"
+//           <Box
+//             display="flex"
 
-            justifyContent="space-between"
+//             justifyContent="space-between"
 
-            alignItems="center"
-          >
+//             alignItems="center"
+//           >
 
-            <FormControlLabel
+//             <FormControlLabel
 
-              control={
+//               control={
 
-                <Checkbox
+//                 <Checkbox
 
-                  checked={remember}
+//                   checked={remember}
 
-                  onChange={() =>
-                    setRemember(!remember)
-                  }
+//                   onChange={() =>
+//                     setRemember(!remember)
+//                   }
 
-                />
+//                 />
 
-              }
+//               }
 
-              label={
-                t("login.rememberMe")
-              }
+//               label={
+//                 t("login.rememberMe")
+//               }
 
-            />
+//             />
 
 
-            <Link
+//             <Link
 
-              component={RouterLink}
+//               component={RouterLink}
 
-              to="/forgot"
+//               to="/forgot"
 
-              underline="hover"
+//               underline="hover"
 
-            >
+//             >
 
-              {
-                t("login.forgotPassword")
-              }
+//               {
+//                 t("login.forgotPassword")
+//               }
 
-            </Link>
+//             </Link>
 
-          </Box>
+//           </Box>
 
 
-          {/* LOGIN BUTTON */}
+//           {/* LOGIN BUTTON */}
 
-          <Button
+//           <Button
 
-            type="submit"
+//             type="submit"
 
-            variant="contained"
+//             variant="contained"
 
-            size="large"
+//             size="large"
 
-            disabled={loading}
+//             disabled={loading}
 
-            sx={{
+//             sx={{
 
-              py: 1.5,
+//               py: 1.5,
 
-              borderRadius: 2,
+//               borderRadius: 2,
 
-              background: "#008BDC",
+//               background: "#008BDC",
 
-              fontSize: 18,
+//               fontSize: 18,
 
-              "&:hover": {
-                background: "#0075b8",
-              },
+//               "&:hover": {
+//                 background: "#0075b8",
+//               },
 
-            }}
+//             }}
 
-          >
+//           >
 
-            {loading
+//             {loading
 
-              ? t("login.loggingIn")
+//               ? t("login.loggingIn")
 
-              : t("login.loginButton")
+//               : t("login.loginButton")
 
-            }
+//             }
 
-          </Button>
+//           </Button>
 
-        </Box>
+//         </Box>
 
 
-        {/* ==========================================
-            OR
-        ========================================== */}
+//         {/* ==========================================
+//             OR
+//         ========================================== */}
 
-        <Typography
+//         <Typography
 
-          textAlign="center"
+//           textAlign="center"
 
-          my={3}
+//           my={3}
 
-          color="text.secondary"
+//           color="text.secondary"
 
-        >
+//         >
 
-          {t("login.or")}
+//           {t("login.or")}
 
-        </Typography>
+//         </Typography>
 
 
-        {/* ==========================================
-            GOOGLE LOGIN
-        ========================================== */}
+//         {/* ==========================================
+//             GOOGLE LOGIN
+//         ========================================== */}
 
-        <Box
+//         <Box
 
-          display="flex"
+//           display="flex"
 
-          justifyContent="center"
+//           justifyContent="center"
 
-          sx={{
-            pointerEvents:
-              loading
-                ? "none"
-                : "auto",
-          }}
+//           sx={{
+//             pointerEvents:
+//               loading
+//                 ? "none"
+//                 : "auto",
+//           }}
 
-        >
+//         >
 
-          <GoogleLogin
+//           <GoogleLogin
 
-            onSuccess={handleGoogleLogin}
+//             onSuccess={handleGoogleLogin}
 
-            onError={() => {
+//             onError={() => {
 
-              console.error(
-                "❌ Google popup/login failed"
-              );
+//               console.error(
+//                 "❌ Google popup/login failed"
+//               );
 
-              alert(
-                t("login.googleLoginFailed") ||
-                "Google login failed"
-              );
+//               alert(
+//                 t("login.googleLoginFailed") ||
+//                 "Google login failed"
+//               );
 
-            }}
+//             }}
 
-          />
+//           />
 
-        </Box>
+//         </Box>
 
 
-        {/* ==========================================
-            REGISTER
-        ========================================== */}
+//         {/* ==========================================
+//             REGISTER
+//         ========================================== */}
 
-        <Typography
+//         <Typography
 
-          textAlign="center"
+//           textAlign="center"
 
-          mt={3}
+//           mt={3}
 
-        >
+//         >
 
-          {t("login.noAccount")}{" "}
+//           {t("login.noAccount")}{" "}
 
 
-          <Link
+//           <Link
 
-            component={RouterLink}
+//             component={RouterLink}
 
-            to="/register"
+//             to="/register"
 
-            underline="hover"
+//             underline="hover"
 
-          >
+//           >
 
-            {t("login.register")}
+//             {t("login.register")}
 
-          </Link>
+//           </Link>
 
-        </Typography>
+//         </Typography>
 
-      </Paper>
+//       </Paper>
 
-    </Box>
+//     </Box>
 
-  );
+//   );
 
-}
+// }
 
 
-export default Login;
+// export default Login;
 
 
 
@@ -3343,107 +3343,107 @@ export default Login;
 
 
 
-// import { useState } from "react";
-// import axios from "axios";
+import { useState } from "react";
+import axios from "axios";
 
-// import {
-//   Box,
-//   Paper,
-//   Typography,
-//   TextField,
-//   Button,
-//   InputAdornment,
-//   IconButton,
-//   Tabs,
-//   Tab,
-//   Checkbox,
-//   FormControlLabel,
-//   Link
-// } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  InputAdornment,
+  IconButton,
+  Tabs,
+  Tab,
+  Checkbox,
+  FormControlLabel,
+  Link
+} from "@mui/material";
 
 
-// import {
-//   Visibility,
-//   VisibilityOff,
-//   Email,
-//   Lock
-// } from "@mui/icons-material";
+import {
+  Visibility,
+  VisibilityOff,
+  Email,
+  Lock
+} from "@mui/icons-material";
 
 
-// import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
-// import logo2 from "../assets/logo2.jpg";
+import logo2 from "../assets/logo2.jpg";
 
 
 
-// function Login() {
+function Login() {
 
 
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
 
 
-//   const [loading,setLoading] = useState(false);
+  const [loading,setLoading] = useState(false);
 
-//   const [showPassword,setShowPassword] = useState(false);
+  const [showPassword,setShowPassword] = useState(false);
 
-//   const [remember,setRemember] = useState(false);
+  const [remember,setRemember] = useState(false);
 
-//   const [loginType,setLoginType] = useState("student");
+  const [loginType,setLoginType] = useState("student");
 
 
 
-//   const [formData,setFormData] = useState({
+  const [formData,setFormData] = useState({
 
-//     email:"",
-//     password:""
+    email:"",
+    password:""
 
-//   });
+  });
 
 
 
 
-//   const handleChange=(e)=>{
+  const handleChange=(e)=>{
 
-//     setFormData({
+    setFormData({
 
-//       ...formData,
+      ...formData,
 
-//       [e.target.name]:e.target.value
+      [e.target.name]:e.target.value
 
-//     });
+    });
 
-//   };
+  };
 
 
 
 
 
-//   const handleGoogleLogin = async(response)=>{
+  const handleGoogleLogin = async(response)=>{
 
-//     try{
+    try{
 
-//       const res = await axios.post(
-//         "http://localhost:8000/api/auth/google",
-//         {
-//           credential:response.credential
-//         }
-//       );
+      const res = await axios.post(
+        "http://localhost:8000/api/auth/google",
+        {
+          credential:response.credential
+        }
+      );
 
 
-//       console.log(res.data);
+      console.log(res.data);
 
 
-//     }
-//     catch(err){
+    }
+    catch(err){
 
-//       console.log(err);
+      console.log(err);
 
-//     }
+    }
 
-//   };
+  };
 
 
 
@@ -3451,104 +3451,104 @@ export default Login;
 
 
 
-//   const handleSubmit = async(e)=>{
+  const handleSubmit = async(e)=>{
 
 
-//     e.preventDefault();
+    e.preventDefault();
 
 
-//     try{
+    try{
 
 
-//       setLoading(true);
+      setLoading(true);
 
 
 
-//       const res = await axios.post(
+      const res = await axios.post(
 
-//         "http://localhost:8000/api/auth/login",
+        "http://localhost:8000/api/auth/login",
 
-//         formData
+        formData
 
-//       );
+      );
 
 
 
-//       const user=res.data.user;
+      const user=res.data.user;
 
 
 
-//       localStorage.setItem(
-//         "token",
-//         res.data.token
-//       );
+      localStorage.setItem(
+        "token",
+        res.data.token
+      );
 
 
 
-//       localStorage.setItem(
-//         "user",
-//         JSON.stringify(user)
-//       );
+      localStorage.setItem(
+        "user",
+        JSON.stringify(user)
+      );
 
 
 
 
 
-//       if(loginType==="admin" && user.role!=="admin"){
+      if(loginType==="admin" && user.role!=="admin"){
 
-//         alert("Please login using Student option");
+        alert("Please login using Student option");
 
-//         return;
+        return;
 
-//       }
+      }
 
 
 
 
-//       if(loginType==="student" && user.role==="admin"){
+      if(loginType==="student" && user.role==="admin"){
 
-//         alert("Please login using Admin option");
+        alert("Please login using Admin option");
 
-//         return;
+        return;
 
-//       }
+      }
 
 
 
 
-//       if(user.role==="admin"){
+      if(user.role==="admin"){
 
-//         navigate("/admin/dashboard");
+        navigate("/admin/dashboard");
 
-//       }
-//       else{
+      }
+      else{
 
-//         navigate("/");
+        navigate("/");
 
-//       }
+      }
 
 
 
-//     }
+    }
 
-//     catch(error){
+    catch(error){
 
-//       alert(
-//         error.response?.data?.message ||
-//         "Login Failed"
-//       );
+      alert(
+        error.response?.data?.message ||
+        "Login Failed"
+      );
 
-//     }
+    }
 
-//     finally{
+    finally{
 
-//       setLoading(false);
+      setLoading(false);
 
-//     }
+    }
 
 
 
-//   };
+  };
 
 
 
@@ -3556,123 +3556,123 @@ export default Login;
 
 
 
-//   return (
+  return (
 
 
-//     <Box
+    <Box
 
-//       sx={{
+      sx={{
 
-//         minHeight:"100vh",
+        minHeight:"100vh",
 
-//         display:"flex",
+        display:"flex",
 
-//         alignItems:"center",
+        alignItems:"center",
 
-//         justifyContent:"center",
+        justifyContent:"center",
 
-//         backgroundImage:`linear-gradient(
-//         rgba(255,255,255,0.75),
-//         rgba(255,255,255,0.75)
-//         ),url(${logo2})`,
+        backgroundImage:`linear-gradient(
+        rgba(255,255,255,0.75),
+        rgba(255,255,255,0.75)
+        ),url(${logo2})`,
 
-//         backgroundSize:"cover",
+        backgroundSize:"cover",
 
-//         backgroundPosition:"center",
+        backgroundPosition:"center",
 
-//         p:3
+        p:3
 
-//       }}
+      }}
 
-//     >
+    >
 
 
 
 
 
-//       <Paper
+      <Paper
 
-//         elevation={8}
+        elevation={8}
 
-//         sx={{
+        sx={{
 
-//           width:"100%",
+          width:"100%",
 
-//           maxWidth:520,
+          maxWidth:520,
 
-//           p:5,
+          p:5,
 
-//           borderRadius:5,
+          borderRadius:5,
 
-//           backdropFilter:"blur(10px)"
+          backdropFilter:"blur(10px)"
 
-//         }}
+        }}
 
-//       >
+      >
 
 
 
 
 
-//         <Box textAlign="center">
+        <Box textAlign="center">
 
 
-//           <Box
+          <Box
 
-//             component="img"
+            component="img"
 
-//             src={logo2}
+            src={logo2}
 
-//             sx={{
+            sx={{
 
-//               width:90,
+              width:90,
 
-//               height:90,
+              height:90,
 
-//               borderRadius:"50%",
+              borderRadius:"50%",
 
-//               objectFit:"cover",
+              objectFit:"cover",
 
-//               mb:2
+              mb:2
 
-//             }}
+            }}
 
-//           />
+          />
 
 
 
 
 
-//           <Typography
+          <Typography
 
-//             variant="h4"
+            variant="h4"
 
-//             fontWeight="bold"
+            fontWeight="bold"
 
-//           >
+          >
 
-//             Welcome Back
+            Welcome Back
 
-//           </Typography>
+          </Typography>
 
 
 
-//           <Typography
+          <Typography
 
-//             color="text.secondary"
+            color="text.secondary"
 
-//             mt={1}
+            mt={1}
 
-//           >
+          >
 
-//             Login to continue
+            Login to continue
 
-//           </Typography>
+          </Typography>
 
 
 
 
-//         </Box>
+        </Box>
 
 
 
@@ -3680,50 +3680,50 @@ export default Login;
 
 
 
-//         {/* Student Admin Toggle */}
+        {/* Student Admin Toggle */}
 
 
 
-//         <Tabs
+        <Tabs
 
-//           value={loginType}
+          value={loginType}
 
-//           onChange={(e,value)=>setLoginType(value)}
+          onChange={(e,value)=>setLoginType(value)}
 
-//           variant="fullWidth"
+          variant="fullWidth"
 
-//           sx={{
+          sx={{
 
-//             mt:4,
+            mt:4,
 
-//             background:"#f3f4f6",
+            background:"#f3f4f6",
 
-//             borderRadius:2
+            borderRadius:2
 
-//           }}
+          }}
 
-//         >
+        >
 
 
-//           <Tab
+          <Tab
 
-//             value="student"
+            value="student"
 
-//             label="Student"
+            label="Student"
 
-//           />
+          />
 
 
-//           <Tab
+          <Tab
 
-//             value="admin"
+            value="admin"
 
-//             label="Admin"
+            label="Admin"
 
-//           />
+          />
 
 
-//         </Tabs>
+        </Tabs>
 
 
 
@@ -3732,57 +3732,57 @@ export default Login;
 
 
 
-//         <Box
+        <Box
 
-//           component="form"
+          component="form"
 
-//           onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
 
-//           sx={{
+          sx={{
 
-//             mt:4,
+            mt:4,
 
-//             display:"flex",
+            display:"flex",
 
-//             flexDirection:"column",
+            flexDirection:"column",
 
-//             gap:3
+            gap:3
 
-//           }}
+          }}
 
-//         >
+        >
 
 
 
 
 
-//           <TextField
+          <TextField
 
-//             label="Email"
+            label="Email"
 
-//             name="email"
+            name="email"
 
-//             value={formData.email}
+            value={formData.email}
 
-//             onChange={handleChange}
+            onChange={handleChange}
 
-//             fullWidth
+            fullWidth
 
-//             InputProps={{
+            InputProps={{
 
-//               startAdornment:(
+              startAdornment:(
 
-//                 <InputAdornment position="start">
+                <InputAdornment position="start">
 
-//                   <Email color="primary"/>
+                  <Email color="primary"/>
 
-//                 </InputAdornment>
+                </InputAdornment>
 
-//               )
+              )
 
-//             }}
+            }}
 
-//           />
+          />
 
 
 
@@ -3790,63 +3790,63 @@ export default Login;
 
 
 
-//           <TextField
+          <TextField
 
-//             label="Password"
+            label="Password"
 
-//             name="password"
+            name="password"
 
-//             type={showPassword?"text":"password"}
+            type={showPassword?"text":"password"}
 
-//             value={formData.password}
+            value={formData.password}
 
-//             onChange={handleChange}
+            onChange={handleChange}
 
-//             fullWidth
+            fullWidth
 
 
-//             InputProps={
+            InputProps={
 
-//               {
+              {
 
-//                 startAdornment:(
+                startAdornment:(
 
-//                   <InputAdornment position="start">
+                  <InputAdornment position="start">
 
-//                     <Lock color="primary"/>
+                    <Lock color="primary"/>
 
-//                   </InputAdornment>
+                  </InputAdornment>
 
-//                 ),
+                ),
 
 
 
-//                 endAdornment:(
+                endAdornment:(
 
-//                   <IconButton
+                  <IconButton
 
-//                     onClick={()=>setShowPassword(!showPassword)}
+                    onClick={()=>setShowPassword(!showPassword)}
 
-//                   >
+                  >
 
-//                     {
-//                       showPassword
-//                       ?
-//                       <VisibilityOff/>
-//                       :
-//                       <Visibility/>
-//                     }
+                    {
+                      showPassword
+                      ?
+                      <VisibilityOff/>
+                      :
+                      <Visibility/>
+                    }
 
 
-//                   </IconButton>
+                  </IconButton>
 
-//                 )
+                )
 
-//               }
+              }
 
-//             }
+            }
 
-//           />
+          />
 
 
 
@@ -3855,145 +3855,145 @@ export default Login;
 
 
 
-//           <Box
+          <Box
 
-//             display="flex"
+            display="flex"
 
-//             justifyContent="space-between"
+            justifyContent="space-between"
 
-//             alignItems="center"
+            alignItems="center"
 
-//           >
+          >
 
 
-//             <FormControlLabel
+            <FormControlLabel
 
-//               control={
+              control={
 
-//                 <Checkbox
+                <Checkbox
 
-//                   checked={remember}
+                  checked={remember}
 
-//                   onChange={()=>setRemember(!remember)}
+                  onChange={()=>setRemember(!remember)}
 
-//                 />
+                />
 
-//               }
+              }
 
-//               label="Remember Me"
+              label="Remember Me"
 
-//             />
+            />
 
-//             <Link
+            <Link
 
-//               href="/forgot"
+              href="/forgot"
 
-//               underline="hover"
-//             >
-//               Forgot Password?
+              underline="hover"
+            >
+              Forgot Password?
 
-//             </Link>
-//           </Box>
-//           <Button
+            </Link>
+          </Box>
+          <Button
 
-//             type="submit"
+            type="submit"
 
-//             variant="contained"
+            variant="contained"
 
-//             size="large"
+            size="large"
 
-//             disabled={loading}
+            disabled={loading}
 
-//             sx={{
+            sx={{
 
-//               py:1.5,
+              py:1.5,
 
-//               borderRadius:2,
+              borderRadius:2,
 
-//               background:"#008BDC",
+              background:"#008BDC",
 
-//               fontSize:18
+              fontSize:18
 
-//             }}
+            }}
 
-//           >
+          >
 
-//             {
-//               loading
-//               ?
-//               "Logging In..."
-//               :
-//               "Login"
-//             }
+            {
+              loading
+              ?
+              "Logging In..."
+              :
+              "Login"
+            }
 
 
-//           </Button>
+          </Button>
 
-//         </Box>
+        </Box>
 
 
-//         <Typography
+        <Typography
 
-//           textAlign="center"
+          textAlign="center"
 
-//           my={3}
+          my={3}
 
-//           color="text.secondary"
+          color="text.secondary"
 
-//         >
+        >
 
-//           OR
+          OR
 
-//         </Typography>
+        </Typography>
 
-//         <Box
+        <Box
 
-//           display="flex"
+          display="flex"
 
-//           justifyContent="center"
+          justifyContent="center"
 
-//         >
+        >
 
 
-//           <GoogleLogin
+          <GoogleLogin
 
-//             onSuccess={handleGoogleLogin}
+            onSuccess={handleGoogleLogin}
 
-//             onError={()=>console.log("Google Login Failed")}
+            onError={()=>console.log("Google Login Failed")}
 
-//           />
+          />
 
 
-//         </Box>
+        </Box>
 
-//         <Typography
+        <Typography
 
-//           textAlign="center"
+          textAlign="center"
 
-//           mt={3}
+          mt={3}
 
-//         >
+        >
 
-//           Don't have an account?{" "}
+          Don't have an account?{" "}
 
 
-//           <Link href="/register">
+          <Link href="/register">
 
-//             Register
+            Register
 
-//           </Link>
+          </Link>
 
 
-//         </Typography>
+        </Typography>
 
-//       </Paper>
+      </Paper>
 
-//     </Box>
+    </Box>
 
 
-//   );
+  );
 
-// }
+}
 
 
-// export default Login;
+export default Login;
