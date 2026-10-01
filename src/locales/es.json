@@ -359,20 +359,21 @@
 
 "jobs": { "filters": "Filtros", "clearAll": "Borrar todo", "category": "Categoría", "categoryPlaceholder": "ej. Desarrollador de software", "location": "Ubicación", "locationPlaceholder": "ej. Mumbai", "experience": "Experiencia", "experiencePlaceholder": "ej. 2 años", "workFromHome": "Trabajo desde casa", "partTime": "Tiempo parcial", "annualSalary": "Salario anual (₹ en lakhs)", "jobsFound": "{{count}} empleos encontrados", "noJobsFound": "No se encontraron empleos" },
 
-"otherUserProfile": {
-  "fetchFailed": "No se pudo cargar el perfil del usuario",
-  "requestSent": "Solicitud de amistad enviada correctamente",
-  "requestError": "Algo salió mal al enviar la solicitud de amistad",
-  "userNotFound": "Usuario no encontrado",
-  "sending": "Enviando...",
-  "requestSentButton": "Solicitud enviada",
-  "addFriend": "Añadir amigo",
-  "phone": "Teléfono",
-  "location": "Ubicación",
-  "qualification": "Cualificación",
-  "skills": "Habilidades",
-  "bio": "Biografía"
-},
+
+  "otherUserProfile": {
+    "failedLoad": "No se pudo cargar el perfil del usuario",
+    "userNotFound": "Usuario no encontrado",
+    "sending": "Enviando...",
+    "requestSent": "Solicitud enviada",
+    "addFriend": "Agregar amigo",
+    "requestSuccess": "Solicitud de amistad enviada correctamente",
+    "requestFailed": "Algo salió mal al enviar la solicitud de amistad",
+    "phone": "Teléfono",
+    "location": "Ubicación",
+    "qualification": "Cualificación",
+    "skills": "Habilidades",
+    "bio": "Biografía"
+  },
 
 "publicSpace": {
   "title": "Espacio público",
@@ -496,6 +497,43 @@
     "failedFetch": "No se pudieron obtener los usuarios",
     "friendRequestSuccess": "¡Solicitud de amistad enviada correctamente!",
     "friendRequestFailed": "No se pudo enviar la solicitud de amistad"
+  },
+
+  
+  "resumePreview": {
+    "unableLoadResume": "No se pudo cargar el currículum",
+    "resumeContentNotFound": "No se encontró el contenido del currículum",
+    "pdfGenerationFailed": "No se pudo generar el PDF",
+    "otpSent": "OTP enviado a tu correo electrónico. Revisa tu bandeja de entrada.",
+    "otpSendFailed": "No se pudo enviar el OTP",
+    "invalidOtp": "Introduce un OTP válido de 6 dígitos",
+    "otpVerified": "OTP verificado correctamente. Abriendo el pago...",
+    "paymentOrderFailed": "No se pudo crear la orden de pago",
+    "razorpayNotLoaded": "Razorpay SDK no está cargado",
+    "resumePremiumDescription": "Premium del currículum - ₹50",
+    "paymentSuccessful": "¡Pago realizado correctamente! Tu currículum ahora es premium.",
+    "paymentVerificationFailed": "No se pudo verificar el pago",
+    "paymentCancelled": "Pago cancelado",
+    "paymentFailed": "Pago fallido",
+    "paymentStartFailed": "No se pudo iniciar el pago",
+    "resumeNotFound": "Currículum no encontrado",
+    "createResume": "Crear currículum",
+    "editResume": "Editar currículum",
+    "premiumActive": "Premium activo",
+    "premiumRequired": "Se requiere Premium de ₹50",
+    "downloadPDF": "Descargar PDF",
+    "education": "EDUCACIÓN",
+    "graduationYear": "Año de graduación",
+    "experience": "EXPERIENCIA",
+    "skills": "HABILIDADES",
+    "projects": "PROYECTOS",
+    "achievements": "LOGROS",
+    "createdUsing": "Currículum creado con Internshala Clone",
+    "verifyEmail": "Verificar correo electrónico",
+    "otpSentTo": "OTP enviado a",
+    "enterOtp": "Introduce el OTP de 6 dígitos",
+    "cancel": "Cancelar",
+    "verifyAndDownload": "Verificar y descargar"
   }
 
 
